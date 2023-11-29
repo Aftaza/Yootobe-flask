@@ -11,41 +11,43 @@
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-record"><i class="fa-solid fa-plus"></i> Add New</button>
             </div>
             <br>
-            <table class="table table-striped">
-                <thead>
-                    <th>No</th>
-                    <th>Title</th>
-                    <th>Channel</th>
-                    <th>Views</th>
-                    <th>Date</th>
-                    <th>Link</th>
-                    <th>Thumbnail</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                    {% if videos!=[] %}
-                        {% for video in videos %}
-                            <tr>
-                                <td> {{ video.id }} </td>
-                                <td>{{ video.title }}</td>
-                                <td>{{ video.channel }}</td>
-                                <td>{{ video.views }}</td>
-                                <td>{{ video.date }}</td>
-                                <td>{{ video.link }}</td>
-                                <td>{{ video.thumbnail }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                            <tr>
-                                <td colspan="8" class="table-activer" style="text-align: center;">No data Found</td>
-                            </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+            <div class="table-responsive text-nowrap p-0 m-0">
+                <table class="table table-hover table-fixed">
+                    <thead class="bg-dark text-white">
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Channel</th>
+                        <th>Views</th>
+                        <th>Date</th>
+                        <th>Link</th>
+                        <th>Thumbnail</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {% if videos!=[] %}
+                            {% for video in videos %}
+                                <tr>
+                                    <th scope="row"> {{ video.id }} </th>
+                                    <td>{{ video.title }}</td>
+                                    <td>{{ video.channel }}</td>
+                                    <td>{{ video.views }}</td>
+                                    <td>{{ video.date }}</td>
+                                    <td>{{ video.link }}</td>
+                                    <td>{{ video.thumbnail }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        <a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                                <tr>
+                                    <td colspan="8" class="table-activer" style="text-align: center;">No data Found</td>
+                                </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
     <!-- Modal -->

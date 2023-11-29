@@ -14,9 +14,25 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    if request.method == 'POST':
+        vid = request.form['title']
+        return redirect(f'search/{vid}')
+    else:
+        videos = VideoYT.query.limit(20).all()
+        return render_template('home.html', videos=videos)
+
+@app.route('/video/<int:vid>')
+def video(vid):
+    video = VideoYT.query.get(vid)
+    embed = re.findall(r"v=([a-zA-Z0-9_-]{8,11})", video.link)
+    return render_template('video.html', video=video, embed=embed)
+
+@app.route('/search/<string:titlee>')
+def search(titlee):
+    videos = VideoYT.query.filter(VideoYT.title.like(f"%{titlee}%")).all()
+    return render_template('search.html', videos=videos, titlee=titlee)
 
 @app.route('/admin-login', methods=['GET', 'POST'])
 def admin_login():
