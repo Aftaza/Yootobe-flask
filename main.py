@@ -1,27 +1,15 @@
 from flask import Flask, render_template, request, redirect, session
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager
-import bcrypt
+from model.models import db, User, VideoYT
+from lib.api import Api
+from datetime import datetime
+import re
 
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = "adKawjjj88919"
-db = SQLAlchemy(app)
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    username = db.Column(db.String(255), nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    
-    def checkpw(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
+db.init_app(app)
 
 with app.app_context():
     db.create_all()
@@ -43,7 +31,10 @@ def admin_login():
             return redirect('/dashboard')
         else:
             return render_template('admin_login.html',error='Invalid user')
-    return render_template('admin_login.html')
+    elif session.get('username'):
+        return redirect('/dashboard')
+    else:
+        return render_template('admin_login.html')
 
 @app.route('/admin-register',methods=['GET','POST'])
 def admin_register():
@@ -56,7 +47,7 @@ def admin_register():
         new_user = User(username=username,email=email,password=password)
         db.session.add(new_user)
         db.session.commit()
-        return redirect('/login')
+        return redirect('/admin-login')
     return render_template('admin_register.html')
 
 @app.route('/dashboard')
@@ -71,7 +62,21 @@ def dashboard():
 def video_record():
     if session.get('username'):
         user = User.query.filter_by(username=session['username']).first()
-        return render_template('record.html',user=user)
+        videos = VideoYT.query.all()
+        return render_template('record.html',user=user, videos=videos)
+    else:
+        return redirect('/admin-login')
+
+@app.route('/new-record', methods=['POST'])
+def new_record():
+    if session.get('username'):
+        url = request.form['url']
+        id = re.findall(r"v=([a-zA-Z0-9_-]{8,11})", url)
+        data = Api(id[0])
+        new_record = VideoYT(title=data[0], channel=data[1], views=data[2], date=datetime.fromisoformat(data[3]), link=url, thumbnail=data[4])
+        db.session.add(new_record)
+        db.session.commit()
+        return redirect('/video-record')
     else:
         return redirect('/admin-login')
 

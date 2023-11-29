@@ -4,9 +4,70 @@
     <header>
         {%include 'sidebar.html'%}
     </header>
-    <main style="margin-top: 58px; margin-left: 280px;">
+    <main style="margin-top: 58px; margin-left: 280px; padding-right: 50px;">
         <div class="container pt-4">
-            <h3>Video Record</h3>
+            <div class="d-flex justify-content-between">
+                <h3>Video Record</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-record"><i class="fa-solid fa-plus"></i> Add New</button>
+            </div>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <th>No</th>
+                    <th>Title</th>
+                    <th>Channel</th>
+                    <th>Views</th>
+                    <th>Date</th>
+                    <th>Link</th>
+                    <th>Thumbnail</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    {% if videos!=[] %}
+                        {% for video in videos %}
+                            <tr>
+                                <td> {{ video.id }} </td>
+                                <td>{{ video.title }}</td>
+                                <td>{{ video.channel }}</td>
+                                <td>{{ video.views }}</td>
+                                <td>{{ video.date }}</td>
+                                <td>{{ video.link }}</td>
+                                <td>{{ video.thumbnail }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                            <tr>
+                                <td colspan="8" class="table-activer" style="text-align: center;">No data Found</td>
+                            </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </main>
+    <!-- Modal -->
+    <div class="modal fade" id="add-new-record" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Record</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('new_record') }}" method="post">
+                    <div class="modal-body">
+                            <div class="mb-1">
+                                <label for="urlInput">Url Youtube</label>
+                                <input name="url" type="text" class="form-control" id="urlInput" placeholder="https://www.youtube.com/watch?v=5q2uZdJuMYI">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {%endblock%}
