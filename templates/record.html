@@ -1,6 +1,17 @@
 {%extends 'base.html'%}
 
 {%block content%}
+<script>
+    function del_record(id){
+        $.ajax({
+            type: "POST",
+            url: "/del-record",
+            data: `id=${id}`,
+            success: function() { alert('Successfully deleted record'); window.location.reload(); },
+            error: function() { alert('Something Error'); window.location.reload();}
+        });
+    }
+</script>
     <header>
         {%include 'sidebar.html'%}
     </header>
@@ -11,8 +22,8 @@
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-record"><i class="fa-solid fa-plus"></i> Add New</button>
             </div>
             <br>
-            <div class="table-responsive text-nowrap p-0 m-0">
-                <table class="table table-hover table-fixed">
+            <div class="table-responsive text-no-warp p-0 m-0">
+                <table id="data" class="table table-hover table-bordered">
                     <thead class="bg-dark text-white">
                         <th>Id</th>
                         <th>Title</th>
@@ -35,8 +46,8 @@
                                     <td>{{ video.link }}</td>
                                     <td>{{ video.thumbnail }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a>
-                                        <a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                        <button class=" col btn btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button class="btn btn-danger" data-id="{{ video.id }}" onclick="del_record({{ video.id }})"><i class="fa-solid fa-trash"></i></button>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -58,18 +69,24 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Record</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ url_for('new_record') }}" method="post">
                     <div class="modal-body">
+                        <form action="{{ url_for('new_record') }}" method="post">
                             <div class="mb-1">
                                 <label for="urlInput">Url Youtube</label>
-                                <input name="url" type="text" class="form-control" id="urlInput" placeholder="https://www.youtube.com/watch?v=5q2uZdJuMYI">
+                                <input name="url" type="text" class="form-control mt-2" id="urlInput" placeholder="https://www.youtube.com/watch?v=5q2uZdJuMYI">
+                                <button class="btn btn-primary mt-3" type="submit">Submit</button>
                             </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel">Cancel</button>
                     </div>
-                </form>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#data').dataTable();
+        });
+    </script>
 {%endblock%}

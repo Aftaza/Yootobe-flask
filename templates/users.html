@@ -6,7 +6,40 @@
     </header>
     <main style="margin-top: 58px; margin-left: 280px;">
         <div class="container pt-4">
-            <h3>Users</h3>
+            <div class="d-flex justify-content-between">
+                <h3>Video Record</h3>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-record"><i class="fa-solid fa-plus"></i> Add New</button>
+            </div>
+            <br>
+            <div class="table-responsive text-no-warp p-0 m-0">
+                <table id="data" class="table table-hover table-bordered">
+                    <thead class="bg-dark text-white">
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {% if users!=[] %}
+                            {% for user in users %}
+                                <tr>
+                                    <th scope="row"> {{ user.id }} </th>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>
+                                        <button class=" col btn btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                                <tr>
+                                    <td colspan="8" class="table-activer" style="text-align: center;">No data Found</td>
+                                </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 {%endblock%}

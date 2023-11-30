@@ -7,6 +7,39 @@
     <main style="margin-top: 58px; margin-left: 280px;">
         <div class="container pt-4">
             <h3>Dashboard</h3>
+            <br>
+            <div class="row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h1 class="card-title"><i class="fa-solid fa-user-tie"></i> Admin</h1>
+                                    <a href="{{ url_for('admin_users') }}" class="btn btn-primary mt-5">Detail</a>
+                                </div>
+                                
+                                <h2 class="card-text me-5 fs-1">{{ user }}</h2>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h1 class="card-title"><i class="fa-brands fa-youtube"></i> Recorded</h1>
+                                    <a href="{{ url_for('video_record') }}" class="btn btn-primary mt-5">Detail</a>
+                                </div>
+                                
+                                <h2 class="card-text me-5 fs-1">{{ video }}</h2>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 {%endblock%}

@@ -4,14 +4,19 @@
 {%include 'navbar.html'%}
     <div class="container mt-3 px-5">
         <div class="row shadow rounded-4 p-3">
-            <iframe width="720" height="550" src="https://www.youtube.com/embed/{{ embed[0] }}" title="{{ video.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <iframe id="autoyt" width="720" height="550" src="https://www.youtube.com/embed/{{ embed[0] }}?&amp;rel=0" title="{{ video.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
         <div class="row mt-2 shadow rounded-4 p-3">
             <h2>{{ video.title }}</h2>
-            <p>{{ video.views }} views ⨀ Uploaded {{ video.date }}</p>
+            <p>{{ video.getViews() }} views ⨀ Uploaded {{ video.getStatus() }}</p>
         </div>
         <div class="row mt-2 shadow rounded-4 p-3">
             <h5>{{ video.channel }}</h5>
         </div>
     </div>
 {%endblock%}
+<script>
+    $(document).ready(function(){
+        $('button .ytp-large-play-button').trigger('click');
+    });
+</script>

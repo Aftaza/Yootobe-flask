@@ -21,6 +21,7 @@ def home():
         return redirect(f'search/{vid}')
     else:
         videos = VideoYT.query.limit(20).all()
+        
         return render_template('home.html', videos=videos)
 
 @app.route('/video/<int:vid>')
@@ -69,8 +70,9 @@ def admin_register():
 @app.route('/dashboard')
 def dashboard():
     if session.get('username'):
-        user = User.query.filter_by(username=session['username']).first()
-        return render_template('dashboard.html',user=user)
+        user = User.query.count()
+        video = VideoYT.query.count()
+        return render_template('dashboard.html',user=user, video=video)
     else:
         return redirect('/admin-login')
 
@@ -96,11 +98,22 @@ def new_record():
     else:
         return redirect('/admin-login')
 
+@app.route('/del-record', methods=['POST'])
+def del_record():
+    if session.get('username'):
+        id = request.form['id']
+        record = VideoYT.query.get(id)
+        db.session.delete(record)
+        db.session.commit()
+        return redirect('/video-record')
+    else:
+        return redirect('/admin-login')
+
 @app.route('/admin-users')
 def admin_users():
     if session.get('username'):
-        user = User.query.filter_by(username=session['username']).first()
-        return render_template('users.html',user=user)
+        users = User.query.all()
+        return render_template('users.html',users=users)
     else:
         return redirect('/admin-login')
 

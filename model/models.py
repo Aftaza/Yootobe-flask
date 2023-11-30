@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from lib.tools import *
 import bcrypt
 
 db = SQLAlchemy()
@@ -40,6 +41,13 @@ class VideoYT(db.Model):
         self.date = date
         self.link = link
         self.thumbnail = thumbnail
+    
+    def getViews(self):
+        return format_views(self.views)
+    
+    def getStatus(self):
+        # f = '%Y-%m-%d %H:%M:%S'
+        return time_status(self.date)
     
     def __repr__(self):
         return '<title %r>' % self.title
