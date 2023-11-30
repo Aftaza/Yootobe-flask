@@ -33,14 +33,16 @@ class VideoYT(db.Model):
     date = db.Column(db.DateTime)
     link = db.Column(db.String(255), nullable=False)
     thumbnail = db.Column(db.String(255), nullable=False)
+    photo = db.Column(db.String(255))
     
-    def __init__(self, title, channel, views, date, link, thumbnail):
+    def __init__(self, title, channel, views, date, link, thumbnail, photo):
         self.title = title
         self.channel = channel
         self.views = views
         self.date = date
         self.link = link
         self.thumbnail = thumbnail
+        self.photo = photo
     
     def getViews(self):
         return format_views(self.views)

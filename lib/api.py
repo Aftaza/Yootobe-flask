@@ -22,12 +22,23 @@ def Api(idYT:str):
         id=idYT
     )
     response = request.execute()
+    
+    channelId = response['items'][0]['snippet']['channelId']
+    
+    request = youtube.channels().list(
+        part="snippet,contentDetails,statistics",
+        id=channelId
+    )
+    
+    resp = request.execute()
+    
     data = [
             response['items'][0]['snippet']['title'], 
             response['items'][0]['snippet']['channelTitle'],
             response['items'][0]['statistics']['viewCount'],
             response['items'][0]['snippet']['publishedAt'],
-            response['items'][0]['snippet']['thumbnails']['standard']['url']
+            response['items'][0]['snippet']['thumbnails']['standard']['url'],
+            resp['items'][0]['snippet']['thumbnails']['medium']['url']
         ]
     
     # with open('response.json', 'w') as res:

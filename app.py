@@ -91,7 +91,7 @@ def new_record():
         url = request.form['url']
         id = re.findall(r"v=([a-zA-Z0-9_-]{8,11})", url)
         data = Api(id[0])
-        new_record = VideoYT(title=data[0], channel=data[1], views=data[2], date=datetime.fromisoformat(data[3]), link=url, thumbnail=data[4])
+        new_record = VideoYT(title=data[0], channel=data[1], views=data[2], date=datetime.fromisoformat(data[3]), link=url, thumbnail=data[4], photo=data[5])
         db.session.add(new_record)
         db.session.commit()
         return redirect('/video-record')
@@ -123,4 +123,4 @@ def logout():
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
